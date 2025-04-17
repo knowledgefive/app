@@ -2,7 +2,7 @@
 # an example application in python
 
 # import modules
-import webbrowser, configparser
+import webbrowser, configparser, traceback
 import FreeSimpleGUI as sg                    
 
 #import components (local modules)
@@ -38,12 +38,12 @@ def app(startup_message:str):
 
     # set menu 
     menu_items = [
-        ['&Help',['&Application Directory', '&About']],
+        ['&Help',['&Application Directory','&KFive Links' ,'&About']],
          ]
     
     # build GUI components
     top_menu = sg.Menu(menu_items, key='-KF-MENU-')
-    kfive_button = sg.Button("KFIVE LINKS", key='-KF-LINKS-')
+    error_button = sg.Button("Make Error", key='-KF-ERROR-')
     message_area = sg.Multiline(startup_message, key='-KF-MESSAGE-', size=(60, 5), disabled=True, no_scrollbar=True)
     status_bar = sg.StatusBar(f'Idle', key='-KF-STATUS-')
 
@@ -51,51 +51,43 @@ def app(startup_message:str):
     layout = [
         [top_menu],
         [message_area],
-        [kfive_button],
+        [error_button],
         [status_bar],
                ]
 
     # create the gui window
-    window = sg.Window(app_name, layout, resizable=False, finalize=True, element_justification='c')    
+    window = sg.Window(app_name, layout, resizable=False, finalize=True, element_justification='c')  
+
+    
 
     # loop event to open the window
     while True:
         event, values = window.read()    
 
-        ''' BUTTONS '''
+        try:
 
-        if event == '-KF-LINKS-':
-
-            try:
-
-                webbrowser.open("https://linktr.ee/knowledgefive", new=2)
-
-            except Exception as error:
-                logger.error(f"Unable to process event {event} due to error {error}")
-                sg.popup(f"Unable to process event {event} due to error {error}")
-
-
-        ''' HELP MENU '''
-        if event == 'About':
-
-            try:
-
-                sg.popup(f"Version:{common.VERSION_NUMBER}")
-
-            except Exception as error:
-                logger.error(f"Unable to process event {event} due to error {error}")
-                sg.popup(f"Unable to process event {event} due to error {error}")
-
-        if event == 'Application Directory':
-
-            try:
+            ''' PLAY '''
+            if event == '-KF-ERROR-':
+                raise ValueError("this is a test error")
+            
+            ''' HELP MENU '''
+            if event == 'Application Directory':
 
                 common.open_directory(common.bundle_dir)
 
-            except Exception as error:
-                logger.error(f"Unable to process event {event} due to error {error}")
-                sg.popup(f"Unable to process event {event} due to error {error}")
+            if event == 'KFive Links':
 
+                webbrowser.open("https://linktr.ee/knowledgefive", new=2)
+
+            if event == 'About':
+
+                sg.popup(f"Version:{common.VERSION_NUMBER}")
+        
+        except Exception as error:
+            logger.error(f"Unable to process event {event} due to error {error}\ntraceback {traceback.format_exc()}")
+            sg.popup(f"Unable to process event {event} due to error:\n{error}")
+
+         
         if event == 'Exit' or event ==sg.WIN_CLOSED:
             break  
 
