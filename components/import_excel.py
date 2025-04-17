@@ -1,10 +1,21 @@
 # accessing excel
 import os, sys
+import pandas as pd
 from openpyxl import load_workbook
 
 def open_excel(workbook_path:str, target_worksheet_name:str):
     '''
     a function for reading an excel document
+
+    PARAMETERS
+    ----------
+    workbook_path : str
+    target_worksheet_name : str
+
+    RETURN 
+    ------
+    dataframe
+
     '''
 
     # check excel file exists
@@ -30,22 +41,16 @@ def open_excel(workbook_path:str, target_worksheet_name:str):
         error_message = f"{target_worksheet_name} not found in {workbook_path}"
         raise ValueError(error_message)
 
-    # load worksheet object
-    target_worksheet = workbook[target_worksheet_name]
+    # load target worksheet into a dataframe
+    target_worksheet = pd.read_excel(workbook_path, sheet_name=target_worksheet_name)
 
-    # loop through target worksheet
-    for row in target_worksheet.iter_rows():
-
-        row_values = []
-
-        for cell in row:
-            row_values.append(cell.value)
-
-        print(f"worksheet row - {row_values}")
+    # return target worksheet if it not empty
+    return None if target_worksheet.empty else target_worksheet
 
 if __name__ == "__main__":
 
     # TESTING
     workbook_path = "data.xlsx"
     worksheet = "shopping"
-    open_excel(workbook_path, worksheet)
+    dataframe = open_excel(workbook_path, worksheet)
+    print(f"test result\n{dataframe}")
