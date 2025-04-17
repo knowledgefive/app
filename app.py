@@ -1,12 +1,22 @@
 # knowledgefive version 0.1.0
 # an example application in python
 
-# import  modules
-import webbrowser
+# import modules
+import webbrowser, configparser
 import FreeSimpleGUI as sg                    
+
+#import components (local modules)
+from components import common
 
 # set the GUI theme
 sg.theme('Reddit')
+
+# setup log file
+logger = common.setup_logger(__name__, common.LOG_FILE)
+
+# setup config file
+config = configparser.ConfigParser()
+config.read(common.CONFIG_FILE)
 
 def app(startup_message:str):
     '''
@@ -28,13 +38,12 @@ def app(startup_message:str):
 
     # set menu 
     menu_items = [
-        ['&Admin',['&Application Directory']],
+        ['&Help',['&Application Directory', '&About']],
          ]
     
     # build GUI components
     top_menu = sg.Menu(menu_items, key='-KF-MENU-')
-    instagram_button = sg.Button("Instagram")
-    github_button = sg.Button("GitHub")
+    kfive_button = sg.Button("KFIVE LINKS", key='-KF-LINKS-')
     message_area = sg.Multiline(startup_message, key='-KF-MESSAGE-', size=(60, 5), disabled=True, no_scrollbar=True)
     status_bar = sg.StatusBar(f'Idle', key='-KF-STATUS-')
 
@@ -42,7 +51,7 @@ def app(startup_message:str):
     layout = [
         [top_menu],
         [message_area],
-        [instagram_button, github_button],
+        [kfive_button],
         [status_bar],
                ]
 
@@ -53,6 +62,40 @@ def app(startup_message:str):
     while True:
         event, values = window.read()    
 
+        ''' BUTTONS '''
+
+        if event == '-KF-LINKS-':
+
+            try:
+
+                webbrowser.open("https://linktr.ee/knowledgefive", new=2)
+
+            except Exception as error:
+                logger.error(f"Unable to process event {event} due to error {error}")
+                sg.popup(f"Unable to process event {event} due to error {error}")
+
+
+        ''' HELP MENU '''
+        if event == 'About':
+
+            try:
+
+                sg.popup(f"Version:{common.VERSION_NUMBER}")
+
+            except Exception as error:
+                logger.error(f"Unable to process event {event} due to error {error}")
+                sg.popup(f"Unable to process event {event} due to error {error}")
+
+        if event == 'Application Directory':
+
+            try:
+
+                common.open_directory(common.bundle_dir)
+
+            except Exception as error:
+                logger.error(f"Unable to process event {event} due to error {error}")
+                sg.popup(f"Unable to process event {event} due to error {error}")
+
         if event == 'Exit' or event ==sg.WIN_CLOSED:
             break  
 
@@ -61,8 +104,14 @@ def app(startup_message:str):
 
 if __name__ == "__main__":
 
+    # test config read
+    information = config['example']['information']
+    logger.debug(f"reading config file {information}")
+
     # define a startup message
     startup_message = "an example application for learning to code"
 
     # run the application
     app(startup_message)
+
+    logger.debug("application has started")
