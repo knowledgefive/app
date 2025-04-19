@@ -1,20 +1,23 @@
-# accessing excel
+# interacting with an excel workbook in python
+# import modules
 import os, sys
 import pandas as pd
 from openpyxl import load_workbook
 
-def open_excel(workbook_path:str, target_worksheet_name:str):
+# a function to load excel into a pandas dataframe
+# dataframes are often used to manipulate data 
+def open_excel_workbook(workbook_path:str, target_worksheet_name:str):
     '''
     a function for reading an excel document
 
     PARAMETERS
     ----------
-    workbook_path : str
-    target_worksheet_name : str
+    workbook_path : str - path to excel workbook
+    target_worksheet_name : str - excel worksheet name
 
     RETURN 
     ------
-    dataframe
+    dataframe : pd.Dataframe - pandas dataframe
 
     '''
 
@@ -34,11 +37,11 @@ def open_excel(workbook_path:str, target_worksheet_name:str):
         raise ValueError(error_message)
 
     # output results to terminal
-    print(f"workbook {workbook_path} found with {len(worksheets)} worksheets")
+    print(f"workbook {workbook_path} found with {worksheet} worksheets")
 
     # check target worksheet exists
     if target_worksheet_name not in worksheets:
-        error_message = f"{target_worksheet_name} not found in {workbook_path}"
+        error_message = f"{target_worksheet_name} not found in worksheet list {worksheets} for document {workbook_path}"
         raise ValueError(error_message)
 
     # load target worksheet into a dataframe
@@ -49,8 +52,12 @@ def open_excel(workbook_path:str, target_worksheet_name:str):
 
 if __name__ == "__main__":
 
-    # TESTING
+    # a test to turn the worksheet 'shopping" from the workbook 'data.xlsx' into a dataframe
     workbook_path = "data.xlsx"
     worksheet = "shopping"
-    dataframe = open_excel(workbook_path, worksheet)
-    print(f"test result\n{dataframe}")
+    dataframe = open_excel_workbook(workbook_path, worksheet)
+    print(f"dataframe\n{dataframe}")
+
+    # an example of filtering the dataframe
+    filtered_dataframe = dataframe[dataframe['item'] == 'orange']
+    print(f"filtered dataframe\n{filtered_dataframe}")
