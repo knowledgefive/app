@@ -52,10 +52,13 @@ def open_excel_workbook(workbook_path:str, target_worksheet_name:str):
     return None if target_worksheet.empty else target_worksheet
 
 class kf_workbooks():
+    '''
+    a class to access excel workbooks
+    '''
 
     def __init__(self, path:str):
         '''
-        a class to access excel workbooks
+        intial load
 
         PARAMETERS
         -----------
@@ -141,7 +144,6 @@ class kf_workbooks():
         # return target worksheet if it not empty
         return None if target_worksheet.empty else target_worksheet
     
-
 if __name__ == "__main__":
 
     # a test to turn the worksheet 'shopping" from the workbook 'data.xlsx' into a dataframe
