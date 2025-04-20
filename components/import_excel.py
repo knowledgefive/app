@@ -159,5 +159,5 @@ if __name__ == "__main__":
     print(f"filtered dataframe\n{filtered_dataframe}")
 
     # open the workbook into a dataframe using a class
-    result = kf_workbooks(workbook_path).openpyxl()
+    result = kf_workbooks(workbook_path).dataframe(worksheet)
     print(f"class returned\n{result}")
