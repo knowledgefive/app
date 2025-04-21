@@ -1,13 +1,24 @@
-Feature: Opening an excel worksheet into a simple table
+# Feature: Opening an excel worksheet into a simple table
 
-Use the file menu and select 'Open Excel Worksheet'<br />
-![alt text](images/kfa_menu_file.png)
-
-Choose an excel workbook<br />
-![alt text](images/kfa_workbook_selection.png)
-
-Choose a worksheet from the workbook<br />
-![alt text](images/kfa_worksheet_selection.png)
-
-the worksheet should then display itself in an simple table<br />
-![alt text](images/kfa_dataframe_table.png)
+<table>
+    <tr>
+        <th>Details</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>Use the file menu and select 'Open Excel Worksheet'</td>
+        <td><img src="images/kfa_menu_file.png"></td>
+    </tr>
+    <tr>
+        <td>Choose an excel workbook</td>
+        <td><img src="images/kfa_workbook_selection.png"></td>
+    </tr>
+    <tr>
+        <td>Choose a worksheet from the workbook</td>
+        <td><img src="images/kfa_worksheet_selection.png"></td>
+    </tr>
+    <tr>
+        <td>The worksheet will load into simple table</td>
+        <td><img src="images/kfa_dataframe_table.png"></td>
+    </tr>
+</table>
