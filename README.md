@@ -1,5 +1,14 @@
 # about the project
-an example application for learning
+<table>
+    <tr>
+        <th>Details</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>an example application for learning to code</td>
+        <td><img src="guide/images/kfa_startup.png"></td>
+    </tr>
+</table>
 
 # built with
 python
@@ -9,7 +18,8 @@ python
 git clone https://github.com/knowledgefive/app.git
 ```
 
-# Usage
+# roadmap
+- to explore python
 
 # Contact
 https://linktr.ee/knowledgefive
