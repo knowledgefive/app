@@ -1,6 +1,6 @@
 import sys, os, logging
 
-VERSION_NUMBER = "V0.1.0" 
+VERSION_NUMBER = "V0.2.0" 
 
 def application_path():
     '''
@@ -50,6 +50,7 @@ def open_directory(directory_path:str):
     
     # open directory in file explorer
     os.startfile(directory_path)
+
 
 if __name__ == "__main__":
 

@@ -1,12 +1,15 @@
-# knowledgefive version 0.1.0
 # an example application in python
 
 # import modules
+import os
 import webbrowser, configparser, traceback
 import FreeSimpleGUI as sg                    
 
 #import components (local modules)
-from components import common
+from components import common, import_excel
+
+# import gui components
+from components import open_selection, open_dataframe
 
 # set the GUI theme
 sg.theme('Reddit')
@@ -38,6 +41,7 @@ def app(startup_message:str):
 
     # set menu 
     menu_items = [
+        ['&File',['&Open Excel Worksheet']],
         ['&Help',['&Application Directory','&KFive Links' ,'&About']],
          ]
     
@@ -58,17 +62,43 @@ def app(startup_message:str):
     # create the gui window
     window = sg.Window(app_name, layout, resizable=False, finalize=True, element_justification='c')  
 
-    
-
     # loop event to open the window
     while True:
         event, values = window.read()    
 
+        # a try exception to capture error that may happen based on an event
         try:
 
-            ''' PLAY '''
+            ''' EXAMPLES '''
             if event == '-KF-ERROR-':
                 raise ValueError("this is a test error")
+            
+            ''' FILE MENU '''
+            if event == 'Open Excel Worksheet':
+
+                # ask the user for a file
+                user_selected_file = sg.popup_get_file("choose an excel workbook")
+
+                # check the path provided is valid
+                if not os.path.isfile:
+                    error_message = f"selected path {user_selected_file} is not a file"
+                    raise FileNotFoundError(error_message)
+                
+                # choose a worksheet
+                user_workbook_worksheets = import_excel.kf_workbooks(user_selected_file).worksheets()
+
+                # ask user to choose a worksheet
+                user_selected_worksheet = open_selection.open_selection("Choose a worksheet", user_workbook_worksheets)
+
+                # debug the selection return 
+                print(f'{event} - user_selected_worksheet: {user_selected_worksheet}')
+
+                # load selected worksheet into a dataframe
+                user_worksheet_dataframe = import_excel.kf_workbooks(user_selected_file).dataframe(user_selected_worksheet)
+                
+                # load dataframe into a table
+                open_dataframe.open_dataframe(user_worksheet_dataframe, user_selected_worksheet)
+
             
             ''' HELP MENU '''
             if event == 'Application Directory':
@@ -85,7 +115,7 @@ def app(startup_message:str):
         
         except Exception as error:
             logger.error(f"Unable to process event {event} due to error {error}\ntraceback {traceback.format_exc()}")
-            sg.popup(f"Unable to process event {event} due to error:\n{error}")
+            sg.popup(f"Unable to process event {event} due to error:\n{error}\n\nhow could this be improved?")
 
          
         if event == 'Exit' or event ==sg.WIN_CLOSED:

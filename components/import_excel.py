@@ -52,13 +52,10 @@ def open_excel_workbook(workbook_path:str, target_worksheet_name:str):
     return None if target_worksheet.empty else target_worksheet
 
 class kf_workbooks():
-    '''
-    a class to access excel workbooks
-    '''
 
     def __init__(self, path:str):
         '''
-        intial load
+        a class created to access excel workbooks
 
         PARAMETERS
         -----------
@@ -83,6 +80,21 @@ class kf_workbooks():
 
     def __str__(self):
         return f"kf_workbook - accessing: {self.path}"
+    
+    def worksheets(self):
+        '''
+        return the workbooks for the workbook
+
+        '''
+
+        # load workbook in an opnpyxl object
+        workbook = load_workbook(self.path)
+
+        # grab the worksheets
+        worksheets = workbook.sheetnames
+
+        # return a list of worksheets if the workbook is not empty
+        return None if len(worksheets) == 0 else worksheets
     
     def openpyxl(self, worksheet_name:str=None):
         '''
@@ -131,15 +143,15 @@ class kf_workbooks():
             raise ValueError(error_message)
 
         # output results to terminal
-        print(f"workbook {workbook_path} found with {worksheet} worksheets")
+        print(f"workbook {self.path} found with {worksheets} worksheets")
 
         # check target worksheet exists
         if worksheet_name not in worksheets:
-            error_message = f"{worksheet_name} not found in worksheet list {worksheets} for document {workbook_path}"
+            error_message = f"{worksheet_name} not found in worksheet list {worksheets} for document {self.path}"
             raise ValueError(error_message)
 
         # load target worksheet into a dataframe
-        target_worksheet = pd.read_excel(workbook_path, sheet_name=worksheet_name)
+        target_worksheet = pd.read_excel(self.path, sheet_name=worksheet_name)
 
         # return target worksheet if it not empty
         return None if target_worksheet.empty else target_worksheet
