@@ -131,7 +131,7 @@ if __name__ == "__main__":
     logger.debug(f"reading config file {information}")
 
     # define a startup message
-    startup_message = "an example application for learning to code"
+    startup_message = "a python application example"
 
     # run the application
     app(startup_message)
