@@ -14,7 +14,7 @@
 python
 
 # replit
-https://replit.com/@knowledgefive/app?v=1#README.md
+https://replit.com/@knowledgefive/app
 
 # Getting Started
 ```
